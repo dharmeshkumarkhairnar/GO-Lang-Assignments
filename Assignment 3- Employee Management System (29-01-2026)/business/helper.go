@@ -14,11 +14,11 @@ type Employee struct {
 	Alldepartments map[string]models.DepartmentData
 }
 
-func (E *Employee) NewEmployeeData() {
+func (E *Employee) Initialize() {
 	(*E).Alldepartments=make(map[string]models.DepartmentData)
 }
 
-func (E *Employee) ShowData() {
+func (E Employee) ShowData() {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter the Department Name of employee:")
@@ -72,7 +72,7 @@ func (E *Employee) AverageSalary() int {
 	return totalSalary / countEmployee
 }
 
-func (E *Employee) AddEmployee() {
+func (E Employee) AddEmployee() {
 	var e models.EmployeeData
 
 	reader := bufio.NewReader(os.Stdin)

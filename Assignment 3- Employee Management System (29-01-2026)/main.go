@@ -7,7 +7,7 @@ import (
 
 func main() {
 	var E business.Employee
-	E.NewEmployeeData()
+	E.Initialize()
 	//var d models.DepartmentData
 	
 	for true {
