@@ -1,11 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"employeeManagementSystem/business"
+	"fmt"
+)
 
 func main() {
-	initialize()
-	var d departmentData
-
+	var E business.Employee
+	E.NewEmployeeData()
+	//var d models.DepartmentData
+	
 	for true {
 		n := 0
 		fmt.Println("What you want to do?")
@@ -17,20 +21,20 @@ func main() {
 		}
 		switch n {
 		case 1:
-			d.addEmployee()
+			E.AddEmployee()
 		case 2:
-			val := d.averageSalary()
+			val := E.AverageSalary()
 			if val == -1 {
 				fmt.Println("No Such Department Exists!")
 			} else {
-				fmt.Println("Average is ",val)
+				fmt.Println("Average is ", val)
 			}
 		case 3:
-			d.removeEmployee()
+			E.RemoveEmployee()
 		case 4:
-			d.giveRaise()
+			E.GiveRaise()
 		case 5:
-			d.showData()
+			E.ShowData()
 		default:
 			fmt.Print("\n")
 			fmt.Println("No such option Available")
@@ -39,5 +43,5 @@ func main() {
 		}
 	}
 
-	fmt.Println(alldepartments)
+	fmt.Println(E.Alldepartments)
 }
