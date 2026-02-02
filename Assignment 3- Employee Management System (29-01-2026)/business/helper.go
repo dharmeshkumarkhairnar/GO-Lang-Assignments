@@ -15,7 +15,7 @@ type Employee struct {
 }
 
 func (E *Employee) Initialize() {
-	(*E).Alldepartments=make(map[string]models.DepartmentData)
+	(*E).Alldepartments = make(map[string]models.DepartmentData)
 }
 
 func (E Employee) ShowData() {
@@ -78,7 +78,7 @@ func (E Employee) AddEmployee() {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter the Department Name of employee:")
-	department, _:= reader.ReadString('\n')
+	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
 
 	fmt.Print("Enter the Name of employee:")

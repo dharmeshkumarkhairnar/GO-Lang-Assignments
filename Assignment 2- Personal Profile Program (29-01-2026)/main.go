@@ -31,9 +31,7 @@ func main() {
 		case 4:
 			p.CheckForVote()
 		default:
-			fmt.Print("\n")
 			fmt.Println("No such option Available")
-			fmt.Print("\n")
 		}
 	}
 }
