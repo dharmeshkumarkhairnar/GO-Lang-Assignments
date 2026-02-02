@@ -1,10 +1,14 @@
 package main
 
-import "fmt"
-
+import (
+	"assignment2/business"
+	"fmt"
+)
 
 func main() {
-	initialize()
+	// var d business.Data
+	// d.Initialize()
+	var p business.Person
 	for true {
 		n := 0
 		fmt.Println("What you want to do?")
@@ -16,18 +20,20 @@ func main() {
 		}
 		switch n {
 		case 1:
-			takeData()
+			p.TakeData()
 		case 2:
-			introduceMyself()
+			p.IntroduceMyself()
 		case 3:
-			updateAge()
+			fmt.Println("Enter the age")
+			newAge := 0
+			fmt.Scanln(&newAge)
+			p.Age = newAge
 		case 4:
-			checkForVote()
+			p.CheckForVote()
 		default:
 			fmt.Print("\n")
 			fmt.Println("No such option Available")
 			fmt.Print("\n")
 		}
 	}
-
 }
