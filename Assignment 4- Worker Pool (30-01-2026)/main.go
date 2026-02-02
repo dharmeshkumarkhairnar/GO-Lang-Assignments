@@ -1,52 +1,44 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 	"sync"
+	"time"
 )
 
 func worker(ID int, wg *sync.WaitGroup, sharedChannel <-chan int) {
 	defer wg.Done()
 	for i := range sharedChannel {
-		fmt.Println("")
-		fmt.Printf("worker Id: %d doing the job: %d", ID, i)
+		fmt.Printf("worker Id: %d started the job: %d\n", ID, i)
+		time.Sleep(3 * time.Second)
+		fmt.Printf("worker Id: %d finished the job: %d\n", ID, i)
 	}
 }
 
 func main() {
 	var wg sync.WaitGroup
 
-	reader := bufio.NewReader(os.Stdin)
-
 	fmt.Println("Enter the Total workers: ")
-	workers, _ := reader.ReadString('\n')
-	workers = strings.TrimSpace(workers)
-	totalWorkers, _ := strconv.Atoi(workers)
+	workers := 0
+	fmt.Scanln(&workers)
 
 	fmt.Println("Enter the Total Jobs: ")
-	jobs, _ := reader.ReadString('\n')
-	jobs = strings.TrimSpace(jobs)
-	totalJobs, _ := strconv.Atoi(jobs)
+	jobs := 0
+	fmt.Scanln(&jobs)
 
-	wg.Add(totalWorkers)
-	sharedChannel := make(chan int, totalJobs)
+	wg.Add(workers)
+	sharedChannel := make(chan int, jobs)
 
-	for i := range totalWorkers {
-		go worker(i+1, &wg, sharedChannel)
+	for i := 01; i <= workers; i++ {
+		go worker(i, &wg, sharedChannel)
 	}
 
-	for i := range totalJobs {
-		sharedChannel <- i+1
+	for i := range jobs {
+		sharedChannel <- i + 1
 	}
 	close(sharedChannel)
 
 	wg.Wait()
 
-	fmt.Println("")
-	fmt.Println("Done Execution!")
-	fmt.Println("")
+	fmt.Println("\nDone Execution!")
 }
