@@ -13,7 +13,7 @@ import (
 type Person struct {
 	// Id int 		`validate:"required,number"`
 	Name string `validate:"required,alphaspace"`
-	Age  int    `validate:"required,number"`
+	Age  int    `validate:"required,number,gte=0,lte=150"`
 }
 
 func (p *Person) TakeData() {

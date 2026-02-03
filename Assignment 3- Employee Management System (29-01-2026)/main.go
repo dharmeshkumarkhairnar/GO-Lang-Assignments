@@ -6,9 +6,8 @@ import (
 )
 
 func main() {
-	var E business.Employee
-	E.Initialize()
-	//var d models.DepartmentData
+	var D business.DepartmentData
+	business.Initialize()
 	
 	for true {
 		n := 0
@@ -21,27 +20,17 @@ func main() {
 		}
 		switch n {
 		case 1:
-			E.AddEmployee()
+			D.AddEmployee()
 		case 2:
-			val := E.AverageSalary()
-			if val == -1 {
-				fmt.Println("No Such Department Exists!")
-			} else {
-				fmt.Println("Average is ", val)
-			}
+			D.AverageSalary()
 		case 3:
-			E.RemoveEmployee()
+			D.RemoveEmployee()
 		case 4:
-			E.GiveRaise()
+			D.GiveRaise()
 		case 5:
-			E.ShowData()
+			D.ShowData()
 		default:
-			fmt.Print("\n")
 			fmt.Println("No such option Available")
-			fmt.Print("\n")
-
 		}
 	}
-
-	fmt.Println(E.Alldepartments)
 }

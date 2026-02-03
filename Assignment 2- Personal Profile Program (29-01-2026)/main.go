@@ -3,11 +3,14 @@ package main
 import (
 	"assignment2/business"
 	"fmt"
+
+	"github.com/go-playground/validator/v10"
 )
 
 func main() {
 	// var d business.Data
 	// d.Initialize()
+	validate := validator.New()
 	var p business.Person
 	for true {
 		n := 0
@@ -24,10 +27,22 @@ func main() {
 		case 2:
 			p.IntroduceMyself()
 		case 3:
-			fmt.Println("Enter the age")
-			newAge := 0
-			fmt.Scanln(&newAge)
-			p.Age = newAge
+			{
+				fmt.Println("Enter the age")
+				newAge := 0
+				fmt.Scanln(&newAge)
+				p.Age = newAge
+				err := validate.Struct(p)
+
+				if err == nil {
+					fmt.Println("************Entered Successfully!***********")
+				} else {
+					for _, err := range err.(validator.ValidationErrors) {
+						fmt.Println("Wrong entry in :", err.Field())
+					}
+					fmt.Println()
+				}
+			}
 		case 4:
 			p.CheckForVote()
 		default:

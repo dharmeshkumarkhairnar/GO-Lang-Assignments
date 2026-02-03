@@ -2,84 +2,108 @@ package business
 
 import (
 	"bufio"
-	"employeeManagementSystem/models"
 	"fmt"
 	"os"
 	"slices"
 	"strconv"
 	"strings"
+	"github.com/go-playground/validator/v10"
 )
 
-type Employee struct {
-	Alldepartments map[string]models.DepartmentData
+type EmployeeData struct {
+	Id        int    `validate:"required,number"`
+	EmpName   string `validate:"required,alphaspace"`
+	EmpAge    int    `validate:"required,number"`
+	EmpSalary int    `validate:"required,number"`
 }
 
-func (E *Employee) Initialize() {
-	(*E).Alldepartments = make(map[string]models.DepartmentData)
+type DepartmentData struct {
+	DeptName string `validate:"required,alphaspace"`
+	List     []EmployeeData 
 }
 
-func (E Employee) ShowData() {
+var Alldepartments map[string]*DepartmentData
+var EmployeeIDs map[int]int 
+
+func Initialize() {
+	Alldepartments = make(map[string]*DepartmentData)
+	EmployeeIDs=make(map[int]int)
+}
+
+func (D *DepartmentData) ShowData() {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter the Department Name of employee:")
 	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
+	department =strings.ToLower(department)
 
-	data, ok := E.Alldepartments[department]
+	data, ok := Alldepartments[department]
 
 	if !ok {
-		fmt.Println("")
 		fmt.Println("Such department doesn't exist!")
-		fmt.Println("")
 	} else {
 		if len(data.List) == 0 {
 			fmt.Println("No records available!")
 			return
 		}
 		for _, d := range data.List {
-			fmt.Println("")
-			fmt.Printf("Name: %s , Age: %d , Salary: %d\n", d.EmpName, d.EmpAge, d.EmpSalary)
+			fmt.Printf("ID: %d ,Name: %s , Age: %d , Salary: %d\n", d.Id, d.EmpName, d.EmpAge, d.EmpSalary)
 		}
-		fmt.Println("")
 	}
 
 }
 
-func (E *Employee) AverageSalary() int {
+func (D *DepartmentData) AverageSalary() {
 
 	totalSalary := 0
 	countEmployee := 0
-	exist := false
+	// exist := false
 
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter the Department Name of employee:")
 	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
+	department =strings.ToLower(department)
 
-	for key, value := range E.Alldepartments {
-		if key == department {
-			exist = true
-			for _, d := range value.List {
-				totalSalary += d.EmpSalary
-				countEmployee++
-			}
-		}
+	dept, ok := Alldepartments[department]
+
+	if !ok {
+		fmt.Println("No Such Data Found!")
+		return
 	}
-	if !exist {
-		return -1
+
+	for _, emp := range dept.List {
+		totalSalary += emp.EmpSalary
+		countEmployee++
 	}
-	return totalSalary / countEmployee
+
+	fmt.Println("Average is ", totalSalary/countEmployee)
 }
 
-func (E Employee) AddEmployee() {
-	var e models.EmployeeData
+func (D *DepartmentData) AddEmployee() {
+	var e EmployeeData
+	validate := validator.New()
 
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter the Department Name of employee:")
 	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
+	department =strings.ToLower(department)
+
+	err1 := validate.Var(department, "required,alphanumspace")
+
+	if err1 != nil {
+		fmt.Println("Wrong Entry in department name")
+		return
+	}
+
+	fmt.Print("Enter the ID of employee:")
+	id, _ := reader.ReadString('\n')
+	id = strings.TrimSpace(id)
+	e.Id, _ = strconv.Atoi(id)
 
 	fmt.Print("Enter the Name of employee:")
 	name, _ := reader.ReadString('\n')
@@ -95,85 +119,100 @@ func (E Employee) AddEmployee() {
 	salary = strings.TrimSpace(salary)
 	e.EmpSalary, _ = strconv.Atoi(salary)
 
-	data, ok := E.Alldepartments[department]
-	var d models.DepartmentData
+	err := validate.Struct(e)
+
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			fmt.Println("Wrong entry in :", err.Field())
+		}
+		return
+	}
+
+	_,checkId:=EmployeeIDs[e.Id]
+
+	if checkId {
+		fmt.Println("Employee ID already exist!")
+		return
+	}
+
+	EmployeeIDs[e.Id]++
+
+	_, ok := Alldepartments[department]
 
 	if ok {
-		d.DeptName = department
-		d.List = data.List
-		d.List = append(d.List, e)
-		E.Alldepartments[department] = d
-	} else {
-		d.DeptName = department
-		d.List = append(d.List, e)
-		E.Alldepartments[department] = d
+		Alldepartments[department].List = append(Alldepartments[department].List, e)
+		return
+	}
+
+	Alldepartments[department] = &DepartmentData{
+		DeptName: department,
+		List:     []EmployeeData{e},
 	}
 }
 
-func (E *Employee) RemoveEmployee() {
+func (D *DepartmentData) RemoveEmployee() {
 	reader := bufio.NewReader(os.Stdin)
-	deleted := false
 
 	fmt.Print("Enter the Department Name of employee:")
 	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
+	department =strings.ToLower(department)
 
-	fmt.Print("Enter the Name of employee:")
-	empName, _ := reader.ReadString('\n')
-	empName = strings.TrimSpace(empName)
+	fmt.Print("Enter the ID of employee:")
+	id, _ := reader.ReadString('\n')
+	id = strings.TrimSpace(id)
+	empId, _ := strconv.Atoi(id)
 
-	for key, value := range E.Alldepartments {
-		if key == department {
-			for i := 0; i < len(value.List); i++ {
-				if value.List[i].EmpName == empName {
-					value.List = slices.Delete(value.List, i, i+1)
-					E.Alldepartments[department] = value
-					deleted = true
-				}
-			}
+	dept, ok := Alldepartments[department]
+	if !ok {
+		fmt.Println("No Such Data Found!")
+		return
+	}
+
+	for i, emp := range dept.List {
+		if emp.Id == empId {
+			dept.List = slices.Delete(dept.List, i, i+1)
+			fmt.Println("Employee Data Deleted Successfully!")
+			delete(EmployeeIDs,empId)
+			return
 		}
 	}
 
-	if deleted {
-		fmt.Println("Employee Data Deleted Sucessfully!")
-	} else {
-		fmt.Println("No Such Data Found!")
-	}
+	fmt.Println("No Such Data Found!")
 
 }
 
-func (E *Employee) GiveRaise() {
+func (D *DepartmentData) GiveRaise() {
 	reader := bufio.NewReader(os.Stdin)
-	updated := false
 
 	fmt.Print("Enter the Department Name of employee:")
 	department, _ := reader.ReadString('\n')
 	department = strings.TrimSpace(department)
+	department =strings.ToLower(department)
 
-	fmt.Print("Enter the Name of employee:")
-	empName, _ := reader.ReadString('\n')
-	empName = strings.TrimSpace(empName)
+	fmt.Print("Enter the ID of employee:")
+	id, _ := reader.ReadString('\n')
+	id = strings.TrimSpace(id)
+	empId, _ := strconv.Atoi(id)
 
 	fmt.Print("Enter the raise amount for employee:")
 	raise, _ := reader.ReadString('\n')
 	raise = strings.TrimSpace(raise)
 	increase, _ := strconv.Atoi(raise)
 
-	for key, value := range E.Alldepartments {
-		if key == department {
-			for i := 0; i < len(value.List); i++ {
-				if value.List[i].EmpName == empName {
-					value.List[i].EmpSalary = value.List[i].EmpSalary + increase
-					E.Alldepartments[department] = value
-					updated = true
-				}
-			}
+	dept, ok := Alldepartments[department]
+	if !ok {
+		fmt.Println("No Such Data Found!")
+		return
+	}
+
+	for i := range dept.List {
+		if dept.List[i].Id == empId {
+			dept.List[i].EmpSalary += increase
+			fmt.Println("Employee Salary changed Successfully!")
+			return
 		}
 	}
 
-	if updated {
-		fmt.Println("Employee Salary changed Sucessfully!")
-	} else {
-		fmt.Println("No Such Data Found!")
-	}
+	fmt.Println("No Such Data Found!")
 }
