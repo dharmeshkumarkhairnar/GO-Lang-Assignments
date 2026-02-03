@@ -11,7 +11,6 @@ import (
 )
 
 type Person struct {
-	// Id int 		`validate:"required,number"`
 	Name string `validate:"required,alphaspace"`
 	Age  int    `validate:"required,number,gte=0,lte=150"`
 }
@@ -34,6 +33,8 @@ func (p *Person) TakeData() {
 	if err == nil {
 		fmt.Println("************Entered Successfully!***********")
 	} else {
+		p.Name=""
+		p.Age=0
 		for _, err := range err.(validator.ValidationErrors) {
 			fmt.Println("Wrong entry in :", err.Field())
 		}
@@ -105,8 +106,8 @@ func (p *Person) CheckForVote() {
 	// }
 
 	if p.Age >= 18 {
-		fmt.Print("\nYes, you can vote!")
+		fmt.Print("\nYes, you can vote!\n")
 	} else {
-		fmt.Printf("\nSorry! you can't vote. You can vote after %d years", (18 - p.Age))
+		fmt.Printf("\nSorry! you can't vote. You can vote after %d years\n", (18 - p.Age))
 	}
 }
