@@ -10,3 +10,5 @@ Implement a function aggregateSquares that receives squared numbers from the cha
 
 Wait Group:
 Use a wait group to ensure that all goroutines finish their tasks before the program exits. 
+
+![alt text](image.png)
