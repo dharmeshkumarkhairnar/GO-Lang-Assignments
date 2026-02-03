@@ -14,7 +14,7 @@ type EmployeeData struct {
 	Id        int    `validate:"required,number"`
 	EmpName   string `validate:"required,alphaspace"`
 	EmpAge    int    `validate:"required,number"`
-	EmpSalary int    `validate:"required,number"`
+	EmpSalary float64    `validate:"required,number"`
 }
 
 type DepartmentData struct {
@@ -48,7 +48,7 @@ func (D *DepartmentData) ShowData() {
 			return
 		}
 		for _, d := range data.List {
-			fmt.Printf("ID: %d ,Name: %s , Age: %d , Salary: %d\n", d.Id, d.EmpName, d.EmpAge, d.EmpSalary)
+			fmt.Printf("ID: %d ,Name: %s , Age: %d , Salary: %.2f \n", d.Id, d.EmpName, d.EmpAge, d.EmpSalary)
 		}
 	}
 
@@ -56,9 +56,8 @@ func (D *DepartmentData) ShowData() {
 
 func (D *DepartmentData) AverageSalary() {
 
-	totalSalary := 0
-	countEmployee := 0
-	// exist := false
+	totalSalary := 0.0
+	countEmployee := 0.0
 
 	reader := bufio.NewReader(os.Stdin)
 
@@ -79,7 +78,7 @@ func (D *DepartmentData) AverageSalary() {
 		countEmployee++
 	}
 
-	fmt.Println("Average is ", totalSalary/countEmployee)
+	fmt.Printf("Average is %.2f\n", totalSalary/countEmployee)
 }
 
 func (D *DepartmentData) AddEmployee() {
@@ -117,7 +116,7 @@ func (D *DepartmentData) AddEmployee() {
 	fmt.Print("Enter the salary of employee:")
 	salary, _ := reader.ReadString('\n')
 	salary = strings.TrimSpace(salary)
-	e.EmpSalary, _ = strconv.Atoi(salary)
+	e.EmpSalary, _ = strconv.ParseFloat(salary, 64)
 
 	err := validate.Struct(e)
 
@@ -198,7 +197,7 @@ func (D *DepartmentData) GiveRaise() {
 	fmt.Print("Enter the raise amount for employee:")
 	raise, _ := reader.ReadString('\n')
 	raise = strings.TrimSpace(raise)
-	increase, _ := strconv.Atoi(raise)
+	increase, _ := strconv.ParseFloat(raise, 64)
 
 	dept, ok := Alldepartments[department]
 	if !ok {
