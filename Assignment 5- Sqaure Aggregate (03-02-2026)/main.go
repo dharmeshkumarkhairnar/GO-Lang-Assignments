@@ -100,14 +100,18 @@ func main() {
 	_,err:=fmt.Scanln(&size)
 
 	if err!=nil || size<0 {
-		fmt.Println("Enter the Correct input")
+		fmt.Println("Enter the Correct input: ", err)
 		return
 	}
 
 	arr:=make([]float64,size)
 	fmt.Println("Enter the numbers:")
 	for i:=0;i<size;i++ {
-		fmt.Scanln(&arr[i])
+		_,err:=fmt.Scanln(&arr[i])
+		if err!=nil {
+			fmt.Println("Enter the correct entry")
+			return
+		}
 	}
 
 	var wg sync.WaitGroup
