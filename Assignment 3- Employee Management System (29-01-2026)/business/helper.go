@@ -11,10 +11,10 @@ import (
 )
 
 type EmployeeData struct {
-	Id        int    `validate:"required,number"`
+	Id        int    `validate:"required,number,gte=1"`
 	EmpName   string `validate:"required,alphaspace"`
-	EmpAge    int    `validate:"required,number"`
-	EmpSalary float64    `validate:"required,number"`
+	EmpAge    int    `validate:"required,number,gte=18"`
+	EmpSalary float64    `validate:"required,number,gte=0"`
 }
 
 type DepartmentData struct {
@@ -92,7 +92,7 @@ func (D *DepartmentData) AddEmployee() {
 	department = strings.TrimSpace(department)
 	department =strings.ToLower(department)
 
-	err1 := validate.Var(department, "required,alphanumspace")
+	err1 := validate.Var(department, "required,alphaspace")
 
 	if err1 != nil {
 		fmt.Println("Wrong Entry in department name")
