@@ -7,6 +7,7 @@ import (
 
 func main() {
 	var D business.DepartmentData
+	var E business.EmployeeData
 	business.Initialize()
 	
 	for true {
@@ -26,7 +27,7 @@ func main() {
 		case 3:
 			D.RemoveEmployee()
 		case 4:
-			D.GiveRaise()
+			E.GiveRaise()
 		case 5:
 			D.ShowData()
 		default:

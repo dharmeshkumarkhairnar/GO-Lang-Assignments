@@ -181,27 +181,34 @@ func (D *DepartmentData) RemoveEmployee() {
 
 }
 
-func (D *DepartmentData) GiveRaise() {
+func (e *EmployeeData) GiveRaise() {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("Enter the Department Name of employee:")
+	fmt.Print("Enter the Department Name of employee: ")
 	department, _ := reader.ReadString('\n')
-	department = strings.TrimSpace(department)
-	department =strings.ToLower(department)
+	department = strings.ToLower(strings.TrimSpace(department))
 
-	fmt.Print("Enter the ID of employee:")
-	id, _ := reader.ReadString('\n')
-	id = strings.TrimSpace(id)
-	empId, _ := strconv.Atoi(id)
+	fmt.Print("Enter the ID of employee: ")
+	idStr, _ := reader.ReadString('\n')
+	empId, _ := strconv.Atoi(strings.TrimSpace(idStr))
 
-	fmt.Print("Enter the raise amount for employee:")
-	raise, _ := reader.ReadString('\n')
-	raise = strings.TrimSpace(raise)
-	increase, _ := strconv.ParseFloat(raise, 64)
+	fmt.Print("Enter the raise amount for employee: ")
+	raiseStr, _ := reader.ReadString('\n')
+	increase, _ := strconv.ParseFloat(strings.TrimSpace(raiseStr), 64)
+
+	if increase<0 {
+		fmt.Println("Enter the valid raise (It cannot be negative)")
+		return
+	}
 
 	dept, ok := Alldepartments[department]
 	if !ok {
 		fmt.Println("No Such Data Found!")
+		return
+	}
+
+	if _, exist := EmployeeIDs[empId]; !exist {
+		fmt.Println("No such employee exist!")
 		return
 	}
 
