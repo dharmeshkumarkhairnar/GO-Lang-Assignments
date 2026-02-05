@@ -1,72 +1,3 @@
-//**********************Using the Unbuffered channel***************** 
-
-// package main
-
-// import (
-// 	"fmt"
-// 	"sync"
-// )
-
-// var totalSum int
-
-// func squareWorker(chan1 chan int, wg *sync.WaitGroup, result chan int) {
-// 	defer wg.Done()
-
-
-// 	go aggregateSquares(result,wg)
-
-// 	for i := range chan1 {
-// 		val := i * i
-// 		fmt.Println("Square of number is", val)
-// 		result <- val
-// 	}
-
-// 	close(result)
-
-// }
-
-// func aggregateSquares(result chan int, wg *sync.WaitGroup) {
-// 	for i := range result {
-// 		totalSum += i
-// 	}
-// 	wg.Done()
-// }
-
-// func main() {
-// 	size:=0
-// 	fmt.Println("Enter the size of list:")
-// 	fmt.Scanln(&size)
-
-// 	arr:=make([]int,size)
-// 	fmt.Println("Enter the numbers:")
-// 	for i:=0;i<size;i++ {
-// 		fmt.Scanln(&arr[i])
-// 	}
-
-// 	var wg sync.WaitGroup
-
-// 	chan1 := make(chan int)
-// 	result := make(chan int)
-
-// 	wg.Add(2)
-
-// 	go squareWorker(chan1, &wg, result)
-
-// 	for _, d := range arr {
-// 		chan1 <- d
-// 	}
-// 	close(chan1)
-
-// 	wg.Wait()
-
-// 	fmt.Println("Summation of squares is",totalSum)
-
-// }
-
-
-
-//*****************Using the Buffered channel********************
-
 package main
 
 import (
@@ -74,41 +5,41 @@ import (
 	"sync"
 )
 
-var totalSum float64
-
-func squareWorker(chan1 chan float64, wg *sync.WaitGroup, result chan float64) {
+//Worker which will be run for every element of the list
+func squareWorker(element float64, wg *sync.WaitGroup, result chan float64) {
 	defer wg.Done()
-
-	for i := range chan1 {
-		val := i * i
-		fmt.Printf("Square of number is %.2f\n", val)
-		result <- val
-	}
-	close(result)
-
+	val := element * element
+	fmt.Printf("Sqaured number is %.2f\n", val)
+	result <- val
 }
 
-func aggregateSquares(result chan float64) {
+//Funtion which takes the squared values and sum it then pass Total sum of squares through channel.
+func aggregateSquares(result chan float64,totalSum chan float64 ) {
+	sum:=0.0
 	for i := range result {
-		totalSum += i
+		sum += i
 	}
+	totalSum<-sum
 }
 
 func main() {
-	size:=0
+	size := 0
 	fmt.Println("Enter the size of list:")
-	_,err:=fmt.Scanln(&size)
+	_, err := fmt.Scanln(&size)
 
-	if err!=nil || size<0 {
-		fmt.Println("Enter the Correct input: ", err)
+	//input validation
+	if err != nil || size < 0 {
+		fmt.Println("Enter the Correct input")
 		return
 	}
 
-	arr:=make([]float64,size)
+	//using the float list so user can enter int as well as float
+	arr := make([]float64, size)
+
 	fmt.Println("Enter the numbers:")
-	for i:=0;i<size;i++ {
-		_,err:=fmt.Scanln(&arr[i])
-		if err!=nil {
+	for i := 0; i < size; i++ {
+		_, err := fmt.Scanln(&arr[i])
+		if err != nil {
 			fmt.Println("Enter the correct entry")
 			return
 		}
@@ -116,22 +47,27 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	chan1 := make(chan float64,size)
-	result := make(chan float64)
+	//channel for taking sq. values from sqworker and provide to aggregate function.
+	result := make(chan float64, size)
 
-	wg.Add(1)
+	//channel for taking the final result from the aggregate function to main function.
+	totalSum := make(chan float64)
+	
 
-	go squareWorker(chan1, &wg, result)
+	go aggregateSquares(result,totalSum)
 
-	for _, d := range arr {
-		chan1 <- d
+	wg.Add(size)
+
+	for _, ele := range arr {
+		go squareWorker(ele, &wg, result)
 	}
-	close(chan1)
-
-	aggregateSquares(result)
 
 	wg.Wait()
 
-	fmt.Printf("Summation of squares is %.2f \n",totalSum)
+	//Closing the range loop as all the worker has finished their job 
+	//No values will be sent on this channel
+	close(result)
 
+	//recieving the final sum from the aggregate function
+	fmt.Printf("Summation of squares is %.2f \n", <-totalSum)
 }
