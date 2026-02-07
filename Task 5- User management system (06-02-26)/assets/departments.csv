@@ -1,0 +1,101 @@
+department_id,department_name,manager_id,budget,location,employee_count
+D001,Engineering,U091,213087.35,Atlanta,9
+D002,Marketing,U088,193369.52,Seattle,45
+D003,Sales,U076,364473.22,Boston,32
+D004,HR,U015,317824.95,Austin,22
+D005,Finance,U019,128563.93,Austin,24
+D006,Operations,U077,399583.09,Portland,23
+D007,IT,U057,149741.46,Seattle,49
+D008,Research,U052,477070.50,Miami,39
+D009,Support,U064,275103.55,Portland,7
+D010,Legal,U056,393813.57,Portland,21
+D011,Engineering - Team 2,U030,290477.78,Portland,21
+D012,Engineering - Team 5,U074,60057.92,Austin,18
+D013,Support - Team 8,U036,95372.29,Portland,16
+D014,Research - Team 2,U061,136990.26,Chicago,13
+D015,Marketing - Team 3,U043,152911.27,Atlanta,12
+D016,IT - Team 9,U005,163706.48,Chicago,11
+D017,Operations - Team 2,U099,151043.76,Miami,29
+D018,Engineering - Team 9,U060,153311.89,Boston,19
+D019,Operations - Team 10,U097,174623.28,Atlanta,27
+D020,Engineering - Team 4,U035,187304.91,Seattle,17
+D021,Research - Team 2,U004,293286.70,Portland,28
+D022,HR - Team 3,U040,187709.75,Miami,16
+D023,Marketing - Team 4,U015,165361.97,San Francisco,23
+D024,Sales - Team 8,U092,122965.39,Seattle,16
+D025,Research - Team 8,U032,164196.62,Austin,15
+D026,HR - Team 10,U066,236573.14,Austin,30
+D027,Marketing - Team 5,U099,247501.55,Denver,13
+D028,Support - Team 5,U001,120709.75,Seattle,29
+D029,Legal - Team 10,U085,172410.09,Austin,17
+D030,Support - Team 8,U045,133109.99,Miami,15
+D031,Research - Team 6,U025,295193.66,Boston,21
+D032,IT - Team 4,U100,152693.77,Chicago,26
+D033,Research - Team 7,U050,297103.50,Austin,18
+D034,Engineering - Team 3,U065,291338.40,Chicago,30
+D035,Marketing - Team 8,U013,181487.77,Atlanta,3
+D036,Sales - Team 7,U084,292489.20,San Francisco,18
+D037,Finance - Team 6,U080,223176.15,San Francisco,30
+D038,Operations - Team 9,U049,288534.90,Atlanta,30
+D039,Support - Team 1,U080,67105.19,Seattle,10
+D040,Marketing - Team 7,U013,240092.42,San Francisco,17
+D041,Sales - Team 5,U004,61497.74,New York,12
+D042,Operations - Team 6,U056,86392.45,Miami,16
+D043,Legal - Team 3,U022,93767.34,Portland,30
+D044,IT - Team 10,U088,110207.45,Portland,7
+D045,HR - Team 8,U082,113494.33,Seattle,24
+D046,Engineering - Team 8,U037,219402.72,Austin,5
+D047,Research - Team 6,U076,124788.56,Denver,25
+D048,Finance - Team 8,U039,99804.25,Denver,30
+D049,Research - Team 2,U031,145341.07,Chicago,21
+D050,Finance - Team 5,U003,294486.12,Denver,11
+D051,Engineering - Team 10,U088,244577.90,New York,22
+D052,Research - Team 5,U100,249715.03,Portland,28
+D053,Operations - Team 4,U082,97533.00,Seattle,24
+D054,Sales - Team 2,U081,211585.15,Seattle,28
+D055,Research - Team 1,U075,141215.31,Austin,5
+D056,Finance - Team 6,U096,153875.77,Boston,7
+D057,Support - Team 6,U068,175448.69,Seattle,29
+D058,Sales - Team 5,U062,291846.02,Seattle,26
+D059,Operations - Team 2,U060,290723.32,Austin,27
+D060,HR - Team 7,U072,141443.76,Denver,3
+D061,Finance - Team 9,U016,163696.51,Seattle,21
+D062,IT - Team 6,U014,218709.14,Atlanta,3
+D063,Legal - Team 9,U042,278813.98,Boston,23
+D064,Marketing - Team 8,U090,125547.54,Denver,6
+D065,Sales - Team 1,U005,126091.15,Atlanta,6
+D066,Marketing - Team 4,U069,83916.01,Atlanta,14
+D067,Support - Team 7,U076,235567.25,Austin,16
+D068,Marketing - Team 8,U079,152028.97,Seattle,4
+D069,Operations - Team 4,U057,161173.96,Boston,30
+D070,Operations - Team 2,U088,141833.74,Chicago,4
+D071,IT - Team 5,U025,292051.72,Atlanta,5
+D072,HR - Team 10,U003,62644.63,Chicago,10
+D073,Sales - Team 10,U027,67152.54,Miami,9
+D074,Legal - Team 4,U030,132139.89,Austin,28
+D075,Legal - Team 1,U036,264601.53,Austin,7
+D076,Support - Team 5,U023,77481.59,New York,7
+D077,Engineering - Team 6,U031,197213.23,New York,8
+D078,Finance - Team 1,U017,235429.51,Miami,6
+D079,Marketing - Team 8,U058,244504.26,Miami,21
+D080,Marketing - Team 8,U065,105387.44,Portland,4
+D081,Support - Team 5,U059,210835.17,New York,4
+D082,Research - Team 7,U055,221524.37,Atlanta,25
+D083,Research - Team 2,U011,130527.95,Austin,5
+D084,Sales - Team 5,U080,208269.18,Miami,25
+D085,Operations - Team 7,U077,182639.21,Atlanta,19
+D086,Legal - Team 7,U013,248274.02,San Francisco,30
+D087,Support - Team 4,U056,162888.73,Boston,16
+D088,Operations - Team 8,U052,153997.41,San Francisco,13
+D089,IT - Team 6,U086,113722.45,Austin,24
+D090,Research - Team 2,U012,257942.97,San Francisco,16
+D091,Marketing - Team 6,U017,189092.68,Portland,20
+D092,Support - Team 6,U086,80557.82,Chicago,30
+D093,IT - Team 1,U037,200102.52,Chicago,6
+D094,Legal - Team 9,U028,88682.54,Atlanta,10
+D095,Marketing - Team 6,U072,141890.26,Seattle,21
+D096,HR - Team 7,U072,293636.65,Portland,22
+D097,Support - Team 1,U078,282271.07,Seattle,3
+D098,Sales - Team 5,U090,240602.38,Chicago,14
+D099,Engineering - Team 3,U019,191580.27,Denver,5
+D100,Sales - Team 1,U012,236527.94,Boston,15
