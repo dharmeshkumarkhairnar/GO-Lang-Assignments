@@ -1,57 +1,56 @@
 package main
 
 import (
-	"encoding/csv"
 	"fmt"
-	"os"
 	"sync"
+	"userManagementSystem/business"
+	"userManagementSystem/models"
 )
 
-//CSV file worker that will be called for every file
-func ReadCsvFile(fileName string, wg *sync.WaitGroup, channel chan [][]string) {
-	defer wg.Done()
-	file, err1 := os.Open(fileName)
-
-	//File opening error handled
-	if err1 != nil {
-		fmt.Printf("\n============Problem in opening the file %s=============\n",fileName)
-		channel <- nil
-		return
-	}
-
-	reader := csv.NewReader(file)
-	data, err2 := reader.ReadAll()
-
-	//file reading error handled
-	if err2 != nil {
-		fmt.Printf("\n============Problem in reading the file %s=============\n",fileName)
-		channel <- nil
-		return
-	}
-
-	//data is feeded to the channel
-	channel <- data
-
-	fmt.Printf("\nDone Reading %s file\n", fileName)
-}
-
 func main() {
-
 	var wg sync.WaitGroup
-
-	//these are the channels which will get the data from each file
-	usersChannel := make(chan [][]string, 1)
-	departmentsChannel := make(chan [][]string, 1)
-	permissionsChannel := make(chan [][]string, 1)
-	access_logsChannel := make(chan [][]string, 1)
-
+	errChan := make(chan error, 20)
 
 	wg.Add(4)
-	go ReadCsvFile("assets/users.csv", &wg, usersChannel)
-	go ReadCsvFile("assets/departments.csv", &wg, departmentsChannel)
-	go ReadCsvFile("assets/permissions.csv", &wg, permissionsChannel)
-	go ReadCsvFile("assets/access_logs.csv", &wg, access_logsChannel)
+
+	usersChan := business.ReadCSVFile("assets/users.csv", business.ParseUser, &wg, errChan)
+	deptChan := business.ReadCSVFile("assets/departments.csv", business.ParseDepartment, &wg, errChan)
+	permChan := business.ReadCSVFile("assets/permissions.csv", business.ParsePermission, &wg, errChan)
+	logChan := business.ReadCSVFile("assets/access_logs.csv", business.ParseAccessLog, &wg, errChan)
+
+	// Common error handler
+	go func() {
+		for err := range errChan {
+			fmt.Println("ERROR:", err)
+		}
+	}()
+
+	//Data structures which stores the data which is recieved from the channel
+	usersByID := make(map[string]models.User)
+	deptsByID := make(map[string]models.Department)
+	perms := []models.Permission{}
+	logs := []models.AccessLog{}
+
+	for u := range usersChan {
+		usersByID[u.UserID] = u
+	}
+
+	for d := range deptChan {
+		deptsByID[d.DepartmentID] = d
+	}
+
+	for p := range permChan {
+		perms = append(perms, p)
+	}
+
+	for l := range logChan {
+		logs = append(logs, l)
+	}
 
 	wg.Wait()
 
+	//closing error channel because the all other channels are closed now
+	close(errChan)
+
+	fmt.Println("Done reading all files!")
 }
